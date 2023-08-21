@@ -10,7 +10,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model AcademicSemister {
+model AcademicSemester {
   id String @id @default(uuid())
   year Int
   title String
@@ -22,7 +22,7 @@ model AcademicSemister {
   
   students Student[]
 
-  @@map("academic_semisters")
+  @@map("academic_semesters")
 }
 
 model AcademicFaculty {
@@ -65,8 +65,8 @@ model Student {
   gender String
   bloodgroup String
 
-  academicSemister AcademicSemister @relation(fields: [academicSemisterId],references: [id])
-  academicSemisterId String @unique
+  academicSemester AcademicSemester @relation(fields: [academicSemesterId],references: [id])
+  academicSemesterId String @unique
 
   academicDepartment AcademicDepartment @relation(fields: [academicDepartmentId],references: [id])
   academicDepartmentId String

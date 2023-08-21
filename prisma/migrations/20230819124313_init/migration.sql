@@ -1,5 +1,5 @@
 -- CreateTable
-CREATE TABLE "academic_semisters" (
+CREATE TABLE "academic_semesters" (
     "id" TEXT NOT NULL,
     "year" INTEGER NOT NULL,
     "title" TEXT NOT NULL,
@@ -9,7 +9,7 @@ CREATE TABLE "academic_semisters" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "academic_semisters_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "academic_semesters_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -45,7 +45,7 @@ CREATE TABLE "students" (
     "contactNo" TEXT NOT NULL,
     "gender" TEXT NOT NULL,
     "bloodgroup" TEXT NOT NULL,
-    "academicSemisterId" TEXT NOT NULL,
+    "academicSemesterId" TEXT NOT NULL,
     "academicDepartmentId" TEXT NOT NULL,
     "academicFacultyId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -76,13 +76,13 @@ CREATE TABLE "faculty" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "students_academicSemisterId_key" ON "students"("academicSemisterId");
+CREATE UNIQUE INDEX "students_academicSemesterId_key" ON "students"("academicSemesterId");
 
 -- AddForeignKey
 ALTER TABLE "academic_departments" ADD CONSTRAINT "academic_departments_academicFacultyId_fkey" FOREIGN KEY ("academicFacultyId") REFERENCES "academic_faculty"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "students" ADD CONSTRAINT "students_academicSemisterId_fkey" FOREIGN KEY ("academicSemisterId") REFERENCES "academic_semisters"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "students" ADD CONSTRAINT "students_academicSemesterId_fkey" FOREIGN KEY ("academicSemesterId") REFERENCES "academic_semesters"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "students" ADD CONSTRAINT "students_academicDepartmentId_fkey" FOREIGN KEY ("academicDepartmentId") REFERENCES "academic_departments"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
