@@ -16,6 +16,12 @@ router.post(
   auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
   SemesterRegistrationController.insertIntoDB
 );
+router.patch(
+  '/:id',
+  validateRequest(SemesterRegistrationValidation.update),
+  auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
+  SemesterRegistrationController.updateFromDB
+);
 
 router.delete(
   '/:id',

@@ -47,6 +47,53 @@ const insertIntoDB = async (
   return result;
 };
 
+const updateFromDB = async (
+  id: string,
+  payload: Partial<SemesterRegistration>
+): Promise<SemesterRegistration> => {
+  const isExist = await prisma.semesterRegistration.findUnique({
+    where: {
+      id,
+    },
+  });
+
+  if (!isExist) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Data not found.');
+  }
+
+  // UPCOMING ==> ONGOING ==> ENDED
+
+  if (
+    payload.status &&
+    isExist.status === 'UPCOMING' &&
+    payload.status !== 'ONGOING'
+  ) {
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      'Can only move from UPCOMING to ONGOING'
+    );
+  }
+
+  if (
+    payload.status &&
+    isExist.status === 'ONGOING' &&
+    payload.status !== 'ENDED'
+  ) {
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      'Can only move from ONGOING to ENDED.'
+    );
+  }
+  const result = await prisma.semesterRegistration.update({
+    where: {
+      id,
+    },
+    data: payload,
+  });
+
+  return result;
+};
+
 const getAllFromDB = async (
   filters: ISemesterRegistrationFilterRequest,
   options: IPaginationOptions
@@ -149,4 +196,5 @@ export const SemesterRegistrationService = {
   getAllFromDB,
   getByIdFromDB,
   deleteByIdFromDB,
+  updateFromDB,
 };
