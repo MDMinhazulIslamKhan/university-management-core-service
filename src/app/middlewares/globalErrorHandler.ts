@@ -8,7 +8,7 @@ import handleValidationError from '../../errors/handleValidationError';
 
 import { Prisma } from '@prisma/client';
 import { ZodError } from 'zod';
-import handleCastError from '../../errors/handleClientError';
+import handleClientError from '../../errors/handleClientError';
 import handleZodError from '../../errors/handleZodError';
 import { IGenericErrorMessage } from '../../interfaces/error';
 import { errorlogger } from '../../shared/logger';
@@ -38,7 +38,7 @@ const globalErrorHandler: ErrorRequestHandler = (
     message = simplifiedError.message;
     errorMessages = simplifiedError.errorMessages;
   } else if (error instanceof Prisma.PrismaClientKnownRequestError) {
-    const simplifiedError = handleCastError(error);
+    const simplifiedError = handleClientError(error);
     statusCode = simplifiedError.statusCode;
     message = simplifiedError.message;
     errorMessages = simplifiedError.errorMessages;
@@ -47,21 +47,21 @@ const globalErrorHandler: ErrorRequestHandler = (
     message = error.message;
     errorMessages = error?.message
       ? [
-          {
-            path: '',
-            message: error?.message,
-          },
-        ]
+        {
+          path: '',
+          message: error?.message,
+        },
+      ]
       : [];
   } else if (error instanceof Error) {
     message = error?.message;
     errorMessages = error?.message
       ? [
-          {
-            path: '',
-            message: error?.message,
-          },
-        ]
+        {
+          path: '',
+          message: error?.message,
+        },
+      ]
       : [];
   }
 
